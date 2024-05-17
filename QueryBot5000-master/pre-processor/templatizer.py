@@ -23,8 +23,10 @@ STATEMENTS = ['select', 'SELECT', 'INSERT', 'insert', 'UPDATE', 'update', 'delet
 
 PROJECTS = {
     "tiramisu": {
-        "name": "tiramisu",
-        "files": "dbp*postgresql-*.anonymized.sample.gz",
+        "name": "tiramisu-sample",
+        #modified
+        "files": "dbp*postgresql-*.zip.anonymized.gz.anonymized.sample.gz",
+        #"files": "dbp*postgresql-*.anonymized.gz",
         "mysql": False,
         "query_index": 3,
         "time_stamp_format": "%Y-%m-%d %H:%M:%S"
@@ -52,7 +54,6 @@ def ProcessData(path, output_dir, num_logs, config):
     # input: string of path to csv file
     # output: array of tuples
     #           tuple setup: (time_stamp, query)
-    #           type: (datetime string, object)
 
     # Define time tracker
     #over_all_start = time.time()
@@ -203,11 +204,29 @@ def MakeCSVFiles(workload_dict, min_timestamp, max_timestamp, output_dir):
     print("Template count: " + str(template_count))
 
 def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
+    print("Enter ProcessAnonymizedLogs")
+    print(f"Input directory: {input_dir}")
+    print(f"File pattern: {config['files']}")
+
+    #modified to add config name - results in " request returned Internal Server Error for API route "
+    #target = os.path.join(input_dir, config['name'], config['files'])
     target = os.path.join(input_dir, config['files'])
+    print(f"Target pattern: {target}")
+
     files = sorted([ x for x in glob.glob(target) ])
 
+    # Print the list of files found
+    print(f"Files found: {files}")
+
+    if not files:
+        print("No files found matching the pattern. Exiting.")
+        return
+
+    print("finished joining")
     proc = []
+    print("before for loop")
     for i, log_file in enumerate(files):
+        print(f"enter for loop: {i}")
         #if i < 45:
         #    continue
         print(i, log_file)
@@ -219,13 +238,16 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
         p.start()
         proc.append(p)
 
+    print("before second for loop")
     for p in proc:
+        print("enter second for loop to join")
         p.join()
 
 
 # ==============================================
 # main
 # ==============================================
+print("Starting")
 if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Templatize SQL Queries')
     aparser.add_argument('project', choices=PROJECTS.keys(), help='Data source type')
@@ -236,19 +258,18 @@ if __name__ == '__main__':
     args = vars(aparser.parse_args())
 
     #initial test - hardcode: later see docker arguments command
-    # Hardcoded arguments
-    input_dir = "tiramisu-sample.tar.gz"
-    output_dir = "output-dir"
+    input_dir = "/app"
+    output_dir = "/app/output"
     max_log = 1000
     config = {
-        "name": "tiramisu-sample.tar.gz",
-        "files": "dbp*postgresql-*.anonymized.sample.gz",
+        "name": "tiramisu-sample",
+        "files": "dbp*postgresql-*.zip.anonymized.gz.anonymized.sample.gz",
         "mysql": False,
         "query_index": 3,
         "time_stamp_format": "%Y-%m-%d %H:%M:%S"
     }
 
-    # Call the function with hardcoded arguments
+    print("Calling function")
     ProcessAnonymizedLogs(input_dir, output_dir, max_log, config)
 
     #ProcessAnonymizedLogs(args['dir'], args['output'], args['max_log'], PROJECTS[args['project']])

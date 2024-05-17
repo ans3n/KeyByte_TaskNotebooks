@@ -2,15 +2,19 @@
 # Use Python 3.9 Slim Image as Base 
 FROM python:3.9-slim
 
-
-# Add templatizer.py into the container
-ADD templatizer.py /app/templatizer.py
-
 # Set the working directory
 WORKDIR /app
 
+# Copy the current directory contents into the container at /app
+COPY . /app
+# Add templatizer.py into the container
+#ADD templatizer.py /app/templatizer.py
+
+# Set the working directory
+#WORKDIR /app
+
 # Add the tiramisu-sample.tar.gz into the container
-ADD tiramisu-sample.tar.gz /data/input
+ADD tiramisu-sample /app
 
 #alternatively use a dot simply adds to the base folder in the container
 # ADD templatizer.py .
@@ -20,4 +24,5 @@ ADD tiramisu-sample.tar.gz /data/input
 RUN pip install numpy scipy scikit-learn sortedcontainers statsmodels matplotlib torch
 
 # Execute Command on Container Start
-CMD ["python3", "./templatizer.py"]
+#CMD ["python3", "./templatizer.py"]
+ENTRYPOINT ["python3", "./templatizer.py"]
