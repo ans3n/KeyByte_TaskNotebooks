@@ -23,10 +23,10 @@ STATEMENTS = ['select', 'SELECT', 'INSERT', 'insert', 'UPDATE', 'update', 'delet
 
 PROJECTS = {
     "tiramisu": {
-        "name": "tiramisu-sample",
+        "name": "tiramisu",
         #modified
         "files": "dbp*postgresql-*.zip.anonymized.gz.anonymized.sample.gz",
-        #"files": "dbp*postgresql-*.anonymized.gz",
+        #"files": "dbp*postgresql-*.tar.gz",
         "mysql": False,
         "query_index": 3,
         "time_stamp_format": "%Y-%m-%d %H:%M:%S"
@@ -41,7 +41,7 @@ PROJECTS = {
     },
     "oli": {
         "name": "oli",
-        "files": "db*logfile*.anonymized.gz",
+        "files": "db*logfile*.zip.anonymized.gz.anonymized.sample.gz",
         "mysql": True,
         "type_index": 2,
         "query_index": 3,
@@ -226,7 +226,6 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
     proc = []
     print("before for loop")
     for i, log_file in enumerate(files):
-        print(f"enter for loop: {i}")
         #if i < 45:
         #    continue
         print(i, log_file)
@@ -240,7 +239,6 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
 
     print("before second for loop")
     for p in proc:
-        print("enter second for loop to join")
         p.join()
 
 
@@ -262,7 +260,7 @@ if __name__ == '__main__':
     output_dir = "/app/output"
     max_log = 1000
     config = {
-        "name": "tiramisu-sample",
+        "name": "tiramisu",
         "files": "dbp*postgresql-*.zip.anonymized.gz.anonymized.sample.gz",
         "mysql": False,
         "query_index": 3,

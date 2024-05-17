@@ -14,6 +14,7 @@ COPY . /app
 #WORKDIR /app
 
 # Add the tiramisu-sample.tar.gz into the container
+#ADD tiramisu-sample.tar.gz /app
 ADD tiramisu-sample /app
 
 #alternatively use a dot simply adds to the base folder in the container
