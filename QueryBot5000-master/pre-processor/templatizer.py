@@ -79,6 +79,7 @@ def ProcessData(path, output_dir, num_logs, config):
                 break
 
             if config['name'] == 'tiramisu':
+                #print("chose tiramisu")
                 time_stamp = query_info[0]
                 time_stamp = time_stamp[: -8] # remove milliseconds and the time zone
 
@@ -132,7 +133,7 @@ def ProcessData(path, output_dir, num_logs, config):
 def GetTemplate(query, time_stamp, templated_workload):
     # CHANGE: Returns a dictionary, where keys are templates, and they map to
     # a map of timestamps map to query counts with that timestamp
-
+    #print("enter GetTemplate")
     STRING_REGEX = r'([^\\])\'((\')|(.*?([^\\])\'))'
     DOUBLE_QUOTE_STRING_REGEX = r'([^\\])"((")|(.*?([^\\])"))'
 
@@ -146,9 +147,11 @@ def GetTemplate(query, time_stamp, templated_workload):
     template = re.sub(INT_REGEX, r"\1#", template)
 
     if template in templated_workload:
+        #print("enter GetTemplate if statement")
         # add timestamp
         if time_stamp in templated_workload[template]:
             templated_workload[template][time_stamp] += 1
+            #print("add to templated workload")
         else:
             templated_workload[template][time_stamp] = 1
     else:
@@ -219,12 +222,11 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
     print(f"Files found: {files}")
 
     if not files:
-        print("No files found matching the pattern. Exiting.")
+        print("No files found matching the pattern - exiting")
         return
 
     print("finished joining")
     proc = []
-    print("before for loop")
     for i, log_file in enumerate(files):
         #if i < 45:
         #    continue
@@ -245,7 +247,6 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
 # ==============================================
 # main
 # ==============================================
-print("Starting")
 if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Templatize SQL Queries')
     aparser.add_argument('project', choices=PROJECTS.keys(), help='Data source type')
@@ -267,7 +268,6 @@ if __name__ == '__main__':
         "time_stamp_format": "%Y-%m-%d %H:%M:%S"
     }
 
-    print("Calling function")
     ProcessAnonymizedLogs(input_dir, output_dir, max_log, config)
 
     #ProcessAnonymizedLogs(args['dir'], args['output'], args['max_log'], PROJECTS[args['project']])
