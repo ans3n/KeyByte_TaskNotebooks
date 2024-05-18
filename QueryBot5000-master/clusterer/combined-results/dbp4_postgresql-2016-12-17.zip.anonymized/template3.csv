@@ -1,0 +1,2 @@
+1,"SELECT oid, enumlabel FROM pg_catalog.pg_enum WHERE enumtypid = &&&ORDER BY enumsortorder"
+2016-12-17 00:10:00,1

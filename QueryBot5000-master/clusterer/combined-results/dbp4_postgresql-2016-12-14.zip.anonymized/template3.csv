@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, typname, typnamespace, typacl, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = typowner) AS rolname, typinput::oid AS typinput, typoutput::oid AS typoutput, typelem, typrelid, CASE WHEN typrelid = # THEN  @@@:: @@@char @@@ ELSE (SELECT relkind FROM pg_class WHERE oid = typrelid) END AS typrelkind, typtype, typisdefined, typname[#] =  @@@ AND typelem != # AND (SELECT typarray FROM pg_type te WHERE oid = pg_type.typelem) = oid AS isarray FROM pg_type"
+2016-12-14 00:10:00,1

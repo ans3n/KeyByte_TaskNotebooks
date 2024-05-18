@@ -1,0 +1,2 @@
+1,"SELECT inhrelid, inhparent FROM pg_inherits"
+2016-12-26 00:10:00,1

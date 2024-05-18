@@ -1,0 +1,2 @@
+1,UPDATE dv.notes_message SET deleted = NULL WHERE user_id=# AND agency_id_id= @@@ AND notice_id= @@@ AND route_id= @@@
+2016-12-24 05:30:00,1

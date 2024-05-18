@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM account_role_id_seq"
+2017-01-20 00:10:00,1

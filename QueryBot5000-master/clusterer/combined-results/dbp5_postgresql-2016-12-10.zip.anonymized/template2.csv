@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, tmplname, tmplnamespace, tmplinit::oid, tmpllexize::oid FROM pg_ts_template"
+2016-12-10 00:10:00,1

@@ -1,0 +1,2 @@
+48,SELECT agency_id FROM m.agency WHERE agency_id_id= @@@ AND valid_now=#
+2016-11-29 21:30:00,48

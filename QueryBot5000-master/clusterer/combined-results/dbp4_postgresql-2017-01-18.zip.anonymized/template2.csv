@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, opfname, opfnamespace, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = opfowner) AS rolname FROM pg_opfamily"
+2017-01-18 00:10:00,1

@@ -1,0 +1,2 @@
+1,"SELECT COUNT(*) FROM (SELECT device_id, session_id FROM m.trace GROUP BY device_id, session_id, DATE_PART( @@@, stamp)) AS z) WHERE agency_id_id= @@@;"
+2016-12-19 05:00:00,1

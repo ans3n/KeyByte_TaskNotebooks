@@ -1,0 +1,3 @@
+2,"INSERT INTO m.status (agency_id, schedulecount, historicalcount, realtimecount, recordcount, usecount, recordpoint, usepoint, pointcategory, restricted, recordingtime, session_id, device_id, os_version, old_id, app_version, ad_category, voice_over)VALUES ($#, #, #, #, #, #, #, #, #, false, #, #, $#, $#, $#, $#, $#, $# )"
+2016-12-04 00:04:00,1
+2016-12-04 00:42:00,1

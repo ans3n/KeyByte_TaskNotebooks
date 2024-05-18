@@ -1,0 +1,2 @@
+1,"SELECT oid, tableoid, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = defaclrole) AS defaclrole, defaclnamespace, defaclobjtype, defaclacl FROM pg_default_acl"
+2016-12-17 00:10:00,1

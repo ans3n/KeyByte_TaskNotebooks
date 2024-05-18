@@ -1,0 +1,2 @@
+1,SELECT COUNT(*) FROM dv.notes_message WHERE user_id=None AND agency_id_id= @@@ AND notice_id= @@@ AND route_id= @@@;
+2017-01-24 03:10:00,1

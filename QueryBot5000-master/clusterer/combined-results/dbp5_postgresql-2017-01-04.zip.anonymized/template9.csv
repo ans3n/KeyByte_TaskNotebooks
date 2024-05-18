@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM fare_attribute_id_seq"
+2017-01-04 00:10:00,1

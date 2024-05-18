@@ -1,0 +1,4 @@
+3,"INSERT INTO m.call_log (device_id,servlet_path,url,session_id) VALUES ($#,$#,$#,$#)"
+2017-01-03 00:00:00,1
+2017-01-03 00:06:00,1
+2017-01-03 00:08:00,1

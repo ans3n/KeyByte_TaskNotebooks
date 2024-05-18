@@ -1,0 +1,4 @@
+4,"SELECT s.stop_id AS stop_id, s.stop_name, s.stop_lat, s.stop_lon, ceiling((h.distance(#,#,s.stop_lat,s.stop_lon)/#)/#) AS walk_time  FROM m.stop s  WHERE s.stop_lat BETWEEN ($#-$#) AND ($#+$#)  AND s.agency_id = $#  AND s.stop_lon BETWEEN ($#-$#) AND ($#+$#)  ORDER BY |/(((s.stop_lat-($#))^#+(s.stop_lon-($#))^#)) "
+2016-12-21 00:01:00,1
+2016-12-21 00:35:00,2
+2016-12-21 00:36:00,1

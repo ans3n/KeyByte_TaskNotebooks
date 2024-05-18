@@ -1,0 +1,2 @@
+1,"SELECT pg_catalog.format_type(&&&::pg_catalog.oid, NULL)"
+2016-12-16 00:10:00,1

@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM avl_pred_id_seq"
+2017-01-23 00:10:00,1

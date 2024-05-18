@@ -1,0 +1,2 @@
+1,SELECT pg_catalog.pg_is_in_recovery()
+2016-12-25 00:10:00,1

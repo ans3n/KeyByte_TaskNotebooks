@@ -97,10 +97,12 @@ def Combine(input_dir, output_dir):
     max_timestamp = datetime.datetime.min
 
     target = os.path.join(input_dir, "*/*template*.csv")
+    print("New - Target input file with csv: ")
     print(target)
     files = sorted([ x for x in glob.glob(target) ])
     cnt = 0
     for x in files:
+        print("New - x in files: ")
         print(x)
         with open(x, 'r') as f:
             reader = csv.reader(f)
@@ -116,11 +118,13 @@ def Combine(input_dir, output_dir):
         #if cnt == 1000:
         #    break
 
+    print("New - Timestamps: ")
     print(min_timestamp)
     print(max_timestamp)
     with open('templates.txt', 'w') as template_file:
         [ template_file.write(t + "\n") for t in sorted(templated_workload.keys()) ]
 
+    print("New - call MakeCSVFiles")
     MakeCSVFiles(templated_workload, min_timestamp, max_timestamp, output_dir)
 
 

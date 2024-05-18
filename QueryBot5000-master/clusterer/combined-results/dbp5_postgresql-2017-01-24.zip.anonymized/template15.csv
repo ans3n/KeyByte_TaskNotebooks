@@ -1,0 +1,2 @@
+1,UPDATE dv.notes_message nm SET deleted=# FROM m.agency a WHERE nm.user_id = a.user_id AND nm.end_date < CURRENT_DATE;
+2017-01-24 03:10:00,1

@@ -1,0 +1,2 @@
+1,"SELECT tgname, tgfoid::pg_catalog.regproc AS tgfname, pg_catalog.pg_get_triggerdef(oid, false) AS tgdef, tgenabled, tableoid, oid FROM pg_catalog.pg_trigger t WHERE tgrelid = &&&::pg_catalog.oid AND NOT tgisinternal"
+2017-01-02 00:10:00,1

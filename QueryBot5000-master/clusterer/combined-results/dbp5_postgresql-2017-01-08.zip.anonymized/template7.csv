@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, conname, confrelid, pg_catalog.pg_get_constraintdef(oid) AS condef FROM pg_catalog.pg_constraint WHERE conrelid = &&&::pg_catalog.oid AND contype =  @@@"
+2017-01-08 00:10:00,1

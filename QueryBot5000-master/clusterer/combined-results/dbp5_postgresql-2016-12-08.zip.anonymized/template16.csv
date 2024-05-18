@@ -1,0 +1,2 @@
+1,"INSERT INTO m.screen_log (device_id, screen, stamp) VALUES ($#,$#::m.client_screen,$#), ($#,$#::m.client_screen,$#)"
+2016-12-08 00:14:00,1

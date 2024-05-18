@@ -1,0 +1,2 @@
+1,"SELECT sequence_name, start_value, increment_by, CASE WHEN increment_by > # AND max_value = # THEN NULL      WHEN increment_by < # AND max_value = # THEN NULL      ELSE max_value END AS max_value, CASE WHEN increment_by > # AND min_value = # THEN NULL      WHEN increment_by < # AND min_value = # THEN NULL      ELSE min_value END AS min_value, cache_value, is_cycled FROM stop_id_seq"
+2017-01-17 00:10:00,1

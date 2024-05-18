@@ -1,0 +1,2 @@
+1,"UPDATE m.stop_time AS st SET departure_time_hour = h.to_hours(e.intercept_time - aer.error), departure_time_minute = h.to_minutes(e.intercept_time - aer.error), estimate_source =  @@@ FROM m.estimate e, r.avl_error aer WHERE st.agency_id = e.agency_id AND e.agency_id = aer.agency_id AND e.stop_time_id = st.id AND e.estimate_source =  @@@ AND st.trip_id = aer.trip_id AND aer.stop_sequence <= st.stop_sequence AND st.stop_sequence - aer.stop_sequence < #;  "
+2016-12-25 05:44:00,1

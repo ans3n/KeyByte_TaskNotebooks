@@ -1,0 +1,2 @@
+1,"SELECT classid, objid, refclassid, refobjid, deptype FROM pg_depend WHERE deptype !=  @@@ AND deptype !=  @@@ ORDER BY #,#"
+2016-12-26 00:10:00,1

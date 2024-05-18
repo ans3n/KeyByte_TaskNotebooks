@@ -1,0 +1,2 @@
+1,SELECT pg_catalog.pg_get_viewdef(&&&::pg_catalog.oid) AS viewdef
+2017-01-13 00:10:00,1

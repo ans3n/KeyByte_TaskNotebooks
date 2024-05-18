@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = datdba) AS dba, pg_encoding_to_char(encoding) AS encoding, datcollate, datctype, datfrozenxid, datminmxid, (SELECT spcname FROM pg_tablespace t WHERE t.oid = dattablespace) AS tablespace, shobj_description(oid,  @@@) AS description FROM pg_database WHERE datname =  @@@"
+2017-01-04 00:10:00,1

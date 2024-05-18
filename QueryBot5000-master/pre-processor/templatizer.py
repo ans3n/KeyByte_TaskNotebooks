@@ -165,8 +165,10 @@ def MakeCSVFiles(workload_dict, min_timestamp, max_timestamp, output_dir):
     print("Generating CSV files...")
     print(output_dir)
 
+    print("pre create result folder")
     # Create the result folder if not exists
     if not os.path.exists(output_dir):
+        print("creating result folder")
         os.makedirs(output_dir)
 
     # delete any old existing files
@@ -269,6 +271,9 @@ if __name__ == '__main__':
     }
 
     ProcessAnonymizedLogs(input_dir, output_dir, max_log, config)
+    while True:
+        time.sleep(1)
+
 
     #ProcessAnonymizedLogs(args['dir'], args['output'], args['max_log'], PROJECTS[args['project']])
     

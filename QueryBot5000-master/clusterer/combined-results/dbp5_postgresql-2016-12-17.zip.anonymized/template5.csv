@@ -1,0 +1,2 @@
+1,"SELECT provider, label FROM pg_catalog.pg_shseclabel WHERE classoid =  @@@::pg_catalog.regclass AND objoid = #"
+2016-12-17 00:10:00,1

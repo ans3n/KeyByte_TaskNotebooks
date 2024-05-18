@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, cfgname, cfgnamespace, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = cfgowner) AS rolname, cfgparser FROM pg_ts_config"
+2016-12-28 00:10:00,1

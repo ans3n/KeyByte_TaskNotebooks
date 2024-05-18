@@ -1,0 +1,2 @@
+1,"SELECT oid, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = lomowner) AS rolname, lomacl FROM pg_largeobject_metadata"
+2016-12-07 00:10:00,1

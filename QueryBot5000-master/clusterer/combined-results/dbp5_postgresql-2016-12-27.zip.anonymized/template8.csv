@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM observation_stop_id_seq"
+2016-12-27 00:10:00,1

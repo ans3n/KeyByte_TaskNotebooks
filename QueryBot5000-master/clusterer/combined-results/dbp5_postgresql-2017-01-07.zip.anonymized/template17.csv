@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM shape_id_seq"
+2017-01-07 00:10:00,1

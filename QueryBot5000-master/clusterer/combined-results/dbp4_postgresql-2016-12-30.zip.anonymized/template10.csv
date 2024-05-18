@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM password_reset_id_seq"
+2016-12-30 00:10:00,1

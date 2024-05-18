@@ -1,0 +1,2 @@
+3,"SELECT attname, attacl FROM pg_catalog.pg_attribute WHERE attrelid = &&& AND NOT attisdropped AND attacl IS NOT NULL ORDER BY attnum"
+2017-01-12 00:10:00,3

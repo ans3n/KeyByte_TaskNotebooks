@@ -1,0 +1,6 @@
+352,SELECT trip_id FROM m.trip WHERE agency_id = # AND trip_id LIKE &&& AND (block_id =  @@@ OR block_id =  @@@) 
+2017-01-19 05:00:00,79
+2017-01-19 05:01:00,85
+2017-01-19 05:02:00,90
+2017-01-19 05:03:00,49
+2017-01-19 05:04:00,49

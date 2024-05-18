@@ -1,0 +1,6 @@
+387,"UPDATE m.stop_time AS st SET departure_time_hour = #, departure_time_minute = #, estimate_source =  @@@ FROM m.stop s WHERE st.agency_id = # AND s.agency_id = st.agency_id AND st.stop_id = s.stop_id AND s.stop_code = &&& AND st.trip_id =  @@@ "
+2017-01-09 05:00:00,81
+2017-01-09 05:01:00,85
+2017-01-09 05:02:00,62
+2017-01-09 05:03:00,65
+2017-01-09 05:04:00,94

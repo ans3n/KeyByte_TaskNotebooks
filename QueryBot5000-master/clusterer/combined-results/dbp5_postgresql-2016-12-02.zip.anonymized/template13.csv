@@ -1,0 +1,2 @@
+1,select sum(trip_count) + # from m.trip_counter
+2016-12-02 03:23:00,1

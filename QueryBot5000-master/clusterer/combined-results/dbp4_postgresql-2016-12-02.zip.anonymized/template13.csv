@@ -1,0 +1,5 @@
+5,SELECT a.agency_timezone FROM m.agency a WHERE a.agency_id = $# 
+2016-12-02 00:51:00,2
+2016-12-02 00:52:00,1
+2016-12-02 03:36:00,1
+2016-12-02 05:07:00,1

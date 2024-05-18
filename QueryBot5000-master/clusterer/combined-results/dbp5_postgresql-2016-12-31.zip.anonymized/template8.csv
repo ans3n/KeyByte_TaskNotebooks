@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM entity_id_seq"
+2016-12-31 00:10:00,1

@@ -1,0 +1,2 @@
+1,SELECT fdwname FROM pg_foreign_data_wrapper w WHERE w.oid = &&&
+2017-01-18 00:10:00,1

@@ -1,0 +1,2 @@
+1,SELECT agency_id FROM m.agency WHERE valid_now=# AND agency_id_id= @@@;
+2016-12-08 03:10:00,1

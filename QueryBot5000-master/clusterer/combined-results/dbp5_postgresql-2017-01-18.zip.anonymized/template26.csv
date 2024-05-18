@@ -1,0 +1,2 @@
+1,"selected)>= @@@time @@@($#) and  @@@time @@@(time_selected)<= @@@time @@@($#) AND h.distance(latitude, longitude, $#, $#) <=$#group by stop_id ORDER BY freq DESC LIMIT #"
+2017-01-18 04:32:00,1

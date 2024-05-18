@@ -1,0 +1,15 @@
+198,"SELECT distinct a.agency_id FROM m.agency a, m.calendar c, m.trip t WHERE c.agency_id = a.agency_id AND t.agency_id = a.agency_id AND a.avl_agency_name =  @@@ AND t.trip_id =  @@@ AND ((SELECT extract(epoch FROM c.start_date)*#)) <= # AND ((SELECT extract(epoch FROM c.end_date+#)*#)) >= # "
+2017-01-25 05:00:00,11
+2017-01-25 05:02:00,12
+2017-01-25 05:05:00,12
+2017-01-25 05:07:00,13
+2017-01-25 05:10:00,13
+2017-01-25 05:13:00,14
+2017-01-25 05:15:00,14
+2017-01-25 05:18:00,16
+2017-01-25 05:21:00,16
+2017-01-25 05:23:00,17
+2017-01-25 05:26:00,18
+2017-01-25 05:29:00,19
+2017-01-25 05:31:00,20
+2017-01-25 05:34:00,3

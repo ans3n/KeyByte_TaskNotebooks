@@ -1,0 +1,2 @@
+1,"INSERT INTO dv.notes_message (agency_id, agency_id_id, user_id, category, stop_id, notice_id, message_url, start_date, end_date, message) VALUES (#,  @@@, #,  @@@,  @@@,  @@@,  @@@,  @@@,  @@@,  @@@);"
+2017-01-21 03:10:00,1

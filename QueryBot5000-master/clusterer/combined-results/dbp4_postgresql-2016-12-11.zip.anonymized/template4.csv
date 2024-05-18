@@ -1,0 +1,2 @@
+1,"SELECT classid, objid, refclassid, refobjid FROM pg_depend WHERE refclassid =  @@@::regclass AND deptype =  @@@ ORDER BY #,#"
+2016-12-11 00:10:00,1

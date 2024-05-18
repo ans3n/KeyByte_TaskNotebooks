@@ -1,0 +1,2 @@
+1,"INSERT INTO m.app_state_log (device_id, state_type, stamp) VALUES ($#,$#::m.client_state_type,$#), ($#,$#::m.client_state_type,$#)"
+2017-01-09 00:46:00,1

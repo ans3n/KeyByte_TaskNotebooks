@@ -1,0 +1,2 @@
+1,"select a.agency_id, a.agency_id_id, agency_name, agency_phone, ra.agency_lat, ra.agency_lon from m.agency a, m.region_agency ra where a.region_id=$# and a.agency_id_id = ra.agency_id_id and a.valid_now = # order by agency_id"
+2016-12-05 03:56:00,1

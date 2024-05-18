@@ -1,0 +1,2 @@
+1,"SELECT conrelid, confrelid FROM pg_constraint JOIN pg_depend ON (objid = confrelid) WHERE contype =  @@@ AND refclassid =  @@@::regclass AND classid =  @@@::regclass;"
+2016-12-20 00:10:00,1

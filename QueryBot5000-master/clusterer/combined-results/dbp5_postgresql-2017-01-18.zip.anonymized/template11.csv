@@ -1,0 +1,9 @@
+9,"SELECT DISTINCT ea.agency_id, c.start_date FROM m.agency a, m.agency ea, m.calendar c WHERE a.agency_id = $# AND ea.agency_id_id = a.agency_id_id AND ea.agency_id = c.agency_id AND ((SELECT extract(epoch FROM c.start_date)*#)) <= $# AND ((SELECT extract(epoch FROM c.end_date +#)*#)) >= $# "
+2017-01-18 00:23:00,1
+2017-01-18 00:28:00,1
+2017-01-18 00:32:00,1
+2017-01-18 04:21:00,1
+2017-01-18 04:27:00,1
+2017-01-18 04:32:00,2
+2017-01-18 04:45:00,1
+2017-01-18 05:02:00,1

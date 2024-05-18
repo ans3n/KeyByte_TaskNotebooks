@@ -1,0 +1,2 @@
+1,"SELECT label, provider, classoid, objoid, objsubid FROM pg_catalog.pg_seclabel ORDER BY classoid, objoid, objsubid"
+2016-12-05 00:10:00,1

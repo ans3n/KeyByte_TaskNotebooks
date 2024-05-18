@@ -1,0 +1,4 @@
+3,"select st.trip_id, st.stop_sequence, st.estimate_source, st.fullness, st.departure_time_hour, st.departure_time_minute, s.stop_lat, s.stop_lon, t.direction_id, t.route_id, r.route_short_name from m.stop AS s RIGHT JOIN m.stop_time AS st  ON st.agency_id = s.agency_id AND st.stop_id = s.stop_id LEFT JOIN m.trip AS t ON t.agency_id = st.agency_id AND t.trip_id = st.trip_id LEFT JOIN m.route AS r ON t.agency_id = r.agency_id AND t.route_id = r.route_id WHERE st.estimate_source in ( @@@,  @@@) AND st.agency_id = $# AND (((departure_time_hour * # + departure_time_minute) >= ($#-#)  AND (departure_time_hour * # + departure_time_minute) <= ($#+#)) OR ((departure_time_hour * # + departure_time_minute) >= ($#-#)  AND (departure_time_hour * # + departure_time_minute) <= ($#+#)))  order by st.stop_sequence"
+2016-11-29 21:14:00,1
+2016-11-29 21:25:00,1
+2016-11-29 21:28:00,1

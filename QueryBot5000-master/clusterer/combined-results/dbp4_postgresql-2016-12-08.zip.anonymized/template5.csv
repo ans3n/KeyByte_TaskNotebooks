@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, castsource, casttarget, castfunc, castcontext, castmethod FROM pg_cast ORDER BY #,#"
+2016-12-08 00:10:00,1

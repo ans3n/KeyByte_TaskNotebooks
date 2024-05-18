@@ -1,0 +1,2 @@
+1,"SELECT description, classoid, objoid, objsubid FROM pg_catalog.pg_description ORDER BY classoid, objoid, objsubid"
+2017-01-09 00:10:00,1

@@ -1,0 +1,13 @@
+131,"SELECT st.agency_id, st.id, st.trip_id, st.stop_sequence, e.intercept_time - h.seconds(#, #, &&&) FROM m.estimate e, m.stop_time st WHERE st.trip_id =  @@@ AND st.stop_id = &&& AND e.stop_time_id = st.id AND e.estimate_source =  @@@ AND st.agency_id = # AND e.agency_id = st.agency_id; "
+2016-11-30 05:00:00,8
+2016-11-30 05:02:00,9
+2016-11-30 05:05:00,9
+2016-11-30 05:08:00,10
+2016-11-30 05:10:00,10
+2016-11-30 05:13:00,11
+2016-11-30 05:16:00,12
+2016-11-30 05:18:00,11
+2016-11-30 05:21:00,12
+2016-11-30 05:24:00,13
+2016-11-30 05:26:00,13
+2016-11-30 05:29:00,13

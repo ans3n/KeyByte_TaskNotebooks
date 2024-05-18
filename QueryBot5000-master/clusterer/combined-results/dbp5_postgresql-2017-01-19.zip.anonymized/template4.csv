@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, lanname, lanpltrusted, lanplcallfoid, laninline, lanvalidator,  lanacl, (SELECT rolname FROM pg_catalog.pg_roles WHERE oid = lanowner) AS lanowner FROM pg_language WHERE lanispl ORDER BY oid"
+2017-01-19 00:10:00,1

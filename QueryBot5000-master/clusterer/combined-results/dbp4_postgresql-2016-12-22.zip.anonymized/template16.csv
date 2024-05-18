@@ -1,0 +1,2 @@
+1,SELECT * FROM dv.attachment WHERE observation_id = $#
+2016-12-22 02:47:00,1

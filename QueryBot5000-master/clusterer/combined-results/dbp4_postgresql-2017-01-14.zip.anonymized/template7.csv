@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, prsname, prsnamespace, prsstart::oid, prstoken::oid, prsend::oid, prsheadline::oid, prslextype::oid FROM pg_ts_parser"
+2017-01-14 00:10:00,1

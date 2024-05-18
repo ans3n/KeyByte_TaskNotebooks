@@ -1,0 +1,2 @@
+1,"SELECT tableoid, oid, adnum, pg_catalog.pg_get_expr(adbin, adrelid) AS adsrc FROM pg_catalog.pg_attrdef WHERE adrelid = &&&::pg_catalog.oid"
+2017-01-25 00:10:00,1

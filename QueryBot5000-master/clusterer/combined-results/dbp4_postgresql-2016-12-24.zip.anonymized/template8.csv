@@ -1,0 +1,2 @@
+1,"SELECT last_value, is_called FROM trip_id_seq"
+2016-12-24 00:10:00,1

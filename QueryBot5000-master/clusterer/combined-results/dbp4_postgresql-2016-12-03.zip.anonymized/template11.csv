@@ -1,0 +1,2 @@
+1,select min(d.start_date) from m.calendar d where d.agency_id = c.agency_id)))) <= (SELECT extract(epoch FROM now())) AND  ((SELECT extract(epoch FROM (select max(d.end_date+#) from m.calendar d where d.agency_id = c.agency_id)))) >= (SELECT extract(epoch FROM now())) ;  
+2016-12-03 03:00:00,1

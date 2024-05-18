@@ -1,0 +1,2 @@
+1,UPDATE dv.notes_like SET stat_timestamp = NOW() WHERE stat_timestamp IS NULL;  
+2016-12-19 00:02:00,1

@@ -1,0 +1,2 @@
+1,"select quote_literal(x)  from unnest(evttags) as t(x)),  @@@) as evttags, e.evtfoid::regproc as evtfname FROM pg_event_trigger e ORDER BY e.oid"
+2016-12-09 00:10:00,1

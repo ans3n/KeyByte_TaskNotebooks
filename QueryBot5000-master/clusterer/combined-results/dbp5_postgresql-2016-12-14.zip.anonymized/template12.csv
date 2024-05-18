@@ -1,0 +1,2 @@
+1,"INSERT INTO m.user_stop_history(agency_id, device_id,stop_id,latitude,longitude) values($#,$#,$#,$#,$#) "
+2016-12-14 00:23:00,1
