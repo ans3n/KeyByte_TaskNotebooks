@@ -271,8 +271,10 @@ if __name__ == '__main__':
     }
 
     ProcessAnonymizedLogs(input_dir, output_dir, max_log, config)
-    while True:
-        time.sleep(1)
+
+    #Container testing/debugging
+    #while True:
+    #    time.sleep(1)
 
 
     #ProcessAnonymizedLogs(args['dir'], args['output'], args['max_log'], PROJECTS[args['project']])

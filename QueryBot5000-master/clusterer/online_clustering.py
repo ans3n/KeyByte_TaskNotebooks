@@ -41,8 +41,8 @@ STATEMENTS = ['select', 'SELECT', 'INSERT', 'insert', 'UPDATE', 'update', 'delet
 # "2016-10-31","17:50:21.344030"
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S" # Strip milliseconds ".%f"
 
-
 def LoadData(input_path):
+    print("enter load data")
     total_queries = dict()
     templates = []
     min_date = datetime.max
@@ -50,43 +50,77 @@ def LoadData(input_path):
     data = dict()
 
     cnt = 0
-    for csv_file in sorted(os.listdir(input_path)):
-        print(csv_file)
-        with open(input_path + "/" + csv_file, 'r') as f:
-            reader = csv.reader(f)
-            queries, template = next(reader)
+    print(f"checking every for loop in path: {input_path}")
+    # Look through input_path and look inside directories that end with ".zip.anonymized"
+    for root, dirs, files in os.walk(input_path):
+        if root.endswith('.zip.anonymized'):
+            for csv_file in sorted(files):
+                if not csv_file.endswith('.csv'):
+                    print(f"Ignoring non-CSV file: {csv_file}")
+                    continue
 
-            # To make the matplotlib work...
-            template = template.replace('$', '')
+                print(csv_file)
+                #with open(input_path + "/" + csv_file, 'r') as f:
 
-            # Assume we already filtered out other types of queries when combining template csvs
-            #statement = template.split(' ',1)[0]
-            #if not statement in STATEMENTS:
-            #    continue
+                try:
+                    #take care of UnicodeDecodeError with UTF-8
+                    #with open(input_path + "/" + csv_file, 'r', encoding='utf-8', errors='replace') as f:
+                    with open(os.path.join(root, csv_file), 'r', encoding='utf-8', errors='replace') as f:
+                        print(f"Reading csv file: {csv_file}")
+                        # Read the entire content and replace NULL bytes - csv NUL line error
+                        content = f.read().replace('\x00', ' ')
+                        f = content.splitlines()
 
-            #print queries, template
-            total_queries[template] = int(queries)
-            #print queries
+                        reader = csv.reader(f)
+                        #reader = csv.reader(f, delimiter='\t')  # if data tab-delimited
 
-            templates.append(template)
+                        # Skip the first row - column labels
+                        next(reader, None)
 
-            # add template
-            data[template] = SortedDict()
+                        queries, template = next(reader)
+                        #print(f"queries: {queries} templates: {template}")
+                        #queries, template = next(reader)
+                        #print(f"queries: {queries} templates: {template}")
+                        # To make the matplotlib work...
+                        template = template.replace('$', '')
 
-            for line in reader:
-                time_stamp = datetime.strptime(line[0], DATETIME_FORMAT)
-                count = int(line[1])
+                        # Assume we already filtered out other types of queries when combining template csvs
+                        #statement = template.split(' ',1)[0]
+                        #if not statement in STATEMENTS:
+                        #    continue
 
-                data[template][time_stamp] = count
+                        #print queries, template
+                        queries_datetime = datetime.strptime(queries, "%Y-%m-%d %H:%M:%S")
+                        #print(f"queries_datetime: {queries_datetime}")
+                        total_queries[template] = int(queries_datetime.timestamp())
+                        #print(f"checking query template: {total_queries[template]}")
 
-                min_date = min(min_date, time_stamp)
-                max_date = max(max_date, time_stamp)
+                        #print queries
+                        templates.append(template)
 
-        cnt += 1
+                        # add template
+                        data[template] = SortedDict()
 
-        if TESTING:
-            if cnt == 10:
-                break
+                        #Iterate through every line in the CSV file
+                        for line in reader:
+                            #print(f"line to examine: {line} and first line: {line[0]} second line: {line[1]}")
+                            time_stamp = datetime.strptime(line[0], DATETIME_FORMAT)
+                            #print(f"time_stamp: {time_stamp}")
+                            count = int(line[1])
+
+                            data[template][time_stamp] = count
+
+                            min_date = min(min_date, time_stamp)
+                            max_date = max(max_date, time_stamp)
+                except StopIteration:
+                    print(f"StopIteration encountered in file {csv_file}. Moving onto next file")
+                    continue
+
+                cnt += 1
+
+                if TESTING:
+                    if cnt == 10:
+                        break
 
     templates = sorted(templates)
 
@@ -105,21 +139,28 @@ def Similarity(x, y, index):
     return sumxy / (math.sqrt(sumxx * sumyy) + 1e-6)
 
 def ExtractSample(x, index):
+    print("enter extract sample")
     v = []
     for i in index:
         if i in x:
+            #print(f"iteration {i} is in {x} so append {x[i]}")
             v.append(x[i])
         else:
+            #print("i not in x so append 0")
             v.append(0)
 
+    print(f"ExtractSample returning array of length {len(np.array(v))}: {np.array(v)}")
     return np.array(v)
 
 def AddToCenter(center, lower_date, upper_date, data, positive = True):
+    print("enter AddToCenter")
     total = 0
     for d in data.irange(lower_date, upper_date, (True, False)):
         total += data[d]
+        print(f"for iteration {d} add to total {data[d]}")
 
         if d in center:
+            print(f"d is in center with data[d] = {data[d]}")
             if positive:
                 center[d] += data[d]
             else:
@@ -127,11 +168,14 @@ def AddToCenter(center, lower_date, upper_date, data, positive = True):
         else:
             center[d] = data[d]
 
+    print(f"AddToCenter returning total {total}")
     return total
 
 def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluster, centers,
         cluster_totals, total_queries, cluster_sizes, rho):
-    n = (next_date - min_date).seconds // 60 + (next_date - min_date).days * 1440 + 1 
+    print("enter AdjustCluster - with empty centers, cluster totals, and cluster sizes")
+    n = (next_date - min_date).seconds // 60 + (next_date - min_date).days * 1440 + 1
+    print(f"value n to compare with number of samples: {n}")
     num_sample = 10000
     if n > num_sample:
         index = random.sample(range(0, n), num_sample)
@@ -141,10 +185,14 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
     new_ass = last_ass.copy()
 
+    print("enter for loop to update cluster centers with new data")
     # Update cluster centers with new data in the last gap
     for cluster in centers.keys():
+        #print(f"Examining cluster {cluster}")
         for template in last_ass:
+            #print(f"examining template {template}")
             if last_ass[template] == cluster:
+                print("Call AddToCenter")
                 cluster_totals[cluster] += AddToCenter(centers[cluster], current_date, next_date, data[template])
 
     if USE_KNN:
@@ -153,13 +201,18 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
         samples = list()
 
+        print("USE_KNN entering for loop")
         for cluster in clusters:
+            #print(f"for cluster interation {cluster}")
             sample = ExtractSample(centers[cluster], index)
             samples.append(sample)
 
-        if len(samples) == 0:
+        #adjust as having sample length 1 has no neighbors
+        if len(samples) <= 1:
+            print("not enough samples")
             nbrs = None
         else:
+            print("has enough samples")
             normalized_samples = normalize(np.array(samples), copy = False)
             nbrs = NearestNeighbors(n_neighbors=1, algorithm=KNN_ALG, metric='l2')
             nbrs.fit(normalized_samples)
@@ -168,21 +221,28 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
     
 
     cnt = 0
+
+    print("AdjustCluster enter for loop to test whether template belongs to original cluster")
     for t in sorted(data.keys()):
+        print(f"AdjustCluster  new_ass array of {t}: {new_ass[t]}")
         cnt += 1
         # Test whether this template still belongs to the original cluster
         if new_ass[t] != -1:
+            print("not equal -1 so set center")
             center = centers[new_ass[t]]
             #print(cnt, new_ass[t], Similarity(data[t], center, index))
             if cluster_sizes[new_ass[t]] == 1 or Similarity(data[t], center, index) > rho:
+                print("cluster size = 1 or similarity > rho - skipping")
                 continue
 
         # the template is eliminated from the original cluster
         if new_ass[t] != -1:
+            print("template was elimiated from original cluster")
             cluster = new_ass[t]
             #print(centers[new_ass[t]])
             #print([ (d, data[t][d]) for d in data[t].irange(min_date, next_date, (True, False))])
             cluster_sizes[cluster] -= 1
+            print("call AddToCenter - line 245")
             AddToCenter(centers[cluster], min_date, next_date, data[t], False)
             print("%s: template %s quit from cluster %d with total %d" % (next_date, cnt, cluster,
                 total_queries[t]))
@@ -214,6 +274,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
                     cnt, new_cluster, total_queries[t]))
 
             new_ass[t] = new_cluster
+            print("Call AddToCenter - line 277")
             AddToCenter(centers[new_cluster], min_date, next_date, data[t])
             cluster_sizes[new_cluster] += 1
             continue
@@ -227,6 +288,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
         new_ass[t] = next_cluster
         centers[next_cluster] = SortedDict()
+        print("Call AddToCenter - line 294")
         AddToCenter(centers[next_cluster], min_date, next_date, data[t])
         cluster_sizes[next_cluster] = 1
         cluster_totals[next_cluster] = 0
@@ -234,6 +296,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
         next_cluster += 1
 
     clusters = list(centers.keys())
+    print(f"final clusters: {clusters}")
     # a union-find set to track the root cluster for clusters that have been merged
     root = [-1] * len(clusters)
 
@@ -246,26 +309,35 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
             sample = ExtractSample(centers[cluster], index)
             samples.append(sample)
 
-        if len(samples) == 0:
+        if len(samples) <= 1:
+            print("not enough samples again - line 315")
             nbrs = None
         else:
+            print(f"sample length {len(samples)} so normalize")
             normalized_samples = normalize(np.array(samples), copy = False)
             nbrs = NearestNeighbors(n_neighbors=2, algorithm=KNN_ALG, metric='l2')
+            print(f"normalized samples of len {len(normalized_samples)}: {normalized_samples}, nearest neighbors: {nbrs}")
             nbrs.fit(normalized_samples)
 
         print("Finish building kdtree for cluster merging")
 
+    print("enter for loop - line 331")
     for i in range(len(clusters)):
         c1 = clusters[i]
         c = None
 
+        print(f"for iteration {i} with c1 as {c1}")
         if USE_KNN == False or nbrs == None:
+            print("no knn or nbrs")
             for j in range(i + 1, len(clusters)):
                 c2 = clusters[j]
+                print(f"checking iteration j {j} using c2 as {c2}")
                 if Similarity(centers[c1], centers[c2], index) > rho:
+                    print("similarity greater than rho - set c as c2")
                     c = c2
                     break
         else:
+            #print(f"Use knn is {USE_KNN} and nbrs is {nbrs} - enter ExtractSample")
             nbr = nbrs.kneighbors([ExtractSample(centers[c1], index)], return_distance = False)[0]
 
             if clusters[nbr[0]] == c1:
@@ -280,6 +352,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
                 c = clusters[nbr]
 
         if c != None:
+            print(f"c exists as {c}")
             AddToCenter(centers[c], min_date, next_date, centers[c1])
             cluster_sizes[c] += cluster_sizes[c1]
 
@@ -318,12 +391,18 @@ def OnlineClustering(min_date, max_date, data, total_queries, rho):
 
     current_date = min_date
     next_cluster = 0
+
+    print("before OnlineClustering For loop")
     for i in range(num_gaps):
         next_date = current_date + dt.timedelta(minutes = cluster_gap)
         # Calculate similarities based on arrival rates up to the past month
         month_min_date = max(min_date, next_date - dt.timedelta(days = 30))
+        print(f"for loop iteration {i}, next date: {next_date}, month_min_date: {month_min_date}")
+
+        print("Call AdjustCluster - with empty centers, cluster totals, and cluster sizes")
         assign, next_cluster = AdjustCluster(month_min_date, current_date, next_date, data, assignments[-1][1],
                 next_cluster, centers, cluster_totals, total_queries, cluster_sizes, rho)
+        print(f"AdjustCluster return results: assign {assign}, next_cluster {next_cluster}")
         assignments.append((next_date, assign))
 
         current_date = next_date
@@ -336,6 +415,7 @@ def OnlineClustering(min_date, max_date, data, total_queries, rho):
 # main
 # ==============================================
 if __name__ == '__main__':
+    print("Starting clustering main")
     aparser = argparse.ArgumentParser(description='Time series clusreting')
     aparser.add_argument('--dir', default="combined-results", help='The directory that contains the time series'
             'csv files')
@@ -344,19 +424,28 @@ if __name__ == '__main__':
         'whether a query template belongs to a cluster')
     args = vars(aparser.parse_args())
 
+    print(f"Checking output directory: {OUTPUT_DIR}")
     if not os.path.exists(OUTPUT_DIR):
+        print("path not exist so creating")
         os.makedirs(OUTPUT_DIR)
 
+    print("entering load data")
     min_date, max_date, data, total_queries, templates = LoadData(args['dir'])
 
+    print("Main method: Entering OnlineClustering")
     num_clusters, assignment_dict, cluster_totals = OnlineClustering(min_date, max_date, data,
             total_queries, float(args['rho']))
-
+    print("Main Method: finished OnlineClustering")
+    #print(f"LoadData Returned: min_date: {min_date}\nmax_date: {max_date}\ndata: {data}\ntotal queries: {total_queries}\ntemplates: {templates}")
     with open(OUTPUT_DIR + "{}-{}-assignments.pickle".format(args['project'], args['rho']),
             'wb') as f:  # Python 3: open(..., 'wb')
         pickle.dump((num_clusters, assignment_dict, cluster_totals), f)
 
+    print("Number of clusters:")
     print(num_clusters)
+    print("Cluster totals:")
     print(cluster_totals)
+    print("Sum of cluster total values:")
     print(sum(cluster_totals.values()))
+    print("Sum of total query values:")
     print(sum(total_queries.values()))
