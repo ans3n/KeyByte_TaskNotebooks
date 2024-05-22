@@ -135,6 +135,7 @@ def ExtractSample(x, index):
         if i in x:
             v.append(x[i])
         else:
+            #print("append 0 in extractSample")
             v.append(0)
 
     print(f"ExtractSample returning array of length {len(np.array(v))}: {np.array(v)}")
