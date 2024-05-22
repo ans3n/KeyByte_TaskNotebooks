@@ -756,3 +756,4 @@ if __name__ == '__main__':
     Main(PROJECTS[args['project']], args['method'], args['aggregate'], args['horizon'],
             args['input_dir'], args['output_dir'], args['cluster_path'])
 
+    
