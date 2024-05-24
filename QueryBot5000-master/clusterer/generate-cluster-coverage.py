@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import fnmatch
 import csv
+import time
 from datetime import datetime, timedelta
 import datetime as dt
 import sys
@@ -182,6 +183,7 @@ def GenerateData(min_date, max_date, data, data_accu, templates, assignment_dict
         sorted_names, sorted_totals = zip(*sorted_clusters)
 
         current_top_clusters = sorted_clusters[:MAX_CLUSTER_NUM]
+        print("Line 185 - GenerateData Current Date and Current Top Clusters")
         print(current_date, current_top_clusters)
 
         if FULL:
@@ -254,6 +256,7 @@ def WriteResult(path, date, data):
 
 def Main(project, assignment_path, output_csv_dir, output_dir):
     print(f"project {project} assignment_path: {assignment_path}")
+    # Read in input pickle file to get clustering assignments
     with open(assignment_path, 'rb') as f:
         num_clusters, assignment_dict, _ = pickle.load(f)
 
@@ -273,6 +276,8 @@ def Main(project, assignment_path, output_csv_dir, output_dir):
     top_clusters, coverage = GenerateData(min_date, max_date, data, data_accu, templates, assignment_dict,
             total_queries, num_clusters, output_csv_dir)
 
+    #prints clustering-results/online-clustering/tiramisu-0.8-assignments.pickle [0.2024771141772688, 0.34111263676435083, 0.44064638143904383]
+    print("Assignment Path and Coverage:")
     print(assignment_path, coverage)
 
     with open(output_dir + "coverage.pickle", 'wb') as f:  # Python 3: open(..., 'wb')
@@ -292,6 +297,10 @@ if __name__ == '__main__':
 
     print(f"output csv directory being received: {args['output_csv_dir']}")
     print(f"output csv directory being received: {args['output_dir']}")
-    #Main("tiramisu", "online-clustering-results/tiramisu-0.8-assignments.pickle", args['output_csv_dir'], args['output_dir'])
+
+    #docker run cluster-data --project tiramisu --assignment clustering-results/online-clustering/tiramisu-0.8-assignments.pickle --output_csv_dir clustering-results/cluster-coverage --output_dir tiramisu
     Main(args['project'], args['assignment'], args['output_csv_dir'], args['output_dir'])
+
+    while True:
+        time.sleep(1)
 
