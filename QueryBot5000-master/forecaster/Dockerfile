@@ -14,8 +14,7 @@ COPY . /app
 #WORKDIR /app
 
 # Add the tiramisu-sample.tar.gz into the container
-#ADD tiramisu-sample.tar.gz /app
-ADD online-clustering-result /app
+ADD online-clustering-results /app
 
 #alternatively use a dot simply adds to the base folder in the container
 # ADD templatizer.py .

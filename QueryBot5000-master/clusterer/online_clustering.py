@@ -42,7 +42,7 @@ STATEMENTS = ['select', 'SELECT', 'INSERT', 'insert', 'UPDATE', 'update', 'delet
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S" # Strip milliseconds ".%f"
 
 def LoadData(input_path):
-    print("enter load data")
+    #print("enter load data")
     total_queries = dict()
     templates = []
     min_date = datetime.max
@@ -50,8 +50,6 @@ def LoadData(input_path):
     data = dict()
 
     cnt = 0
-    #print(f"checking every for loop in path: {input_path}")
-    # Look through input_path and look inside directories that end with ".zip.anonymized"
     for root, dirs, files in os.walk(input_path):
         if root.endswith('.zip.anonymized'):
             for csv_file in sorted(files):
@@ -64,7 +62,6 @@ def LoadData(input_path):
                 try:
                     #take care of UnicodeDecodeError with UTF-8
                     with open(os.path.join(root, csv_file), 'r', encoding='utf-8', errors='replace') as f:
-                        #print(f"Reading csv file: {csv_file}")
                         # Read the entire content and replace NULL bytes - csv NUL line error
                         content = f.read().replace('\x00', ' ')
                         f = content.splitlines()
@@ -142,7 +139,7 @@ def ExtractSample(x, index):
     return np.array(v)
 
 def AddToCenter(center, lower_date, upper_date, data, positive = True):
-    print("enter AddToCenter")
+    #print("enter AddToCenter")
     total = 0
     for d in data.irange(lower_date, upper_date, (True, False)):
         total += data[d]
@@ -157,14 +154,14 @@ def AddToCenter(center, lower_date, upper_date, data, positive = True):
         else:
             center[d] = data[d]
 
-        print(f"center is now {center[d]}")
+        #print(f"center is now {center[d]}")
 
     #print(f"AddToCenter returning total {total}")
     return total
 
 def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluster, centers,
         cluster_totals, total_queries, cluster_sizes, rho):
-    print("enter AdjustCluster")
+    #print("enter AdjustCluster")
     n = (next_date - min_date).seconds // 60 + (next_date - min_date).days * 1440 + 1
     num_sample = 10000
     if n > num_sample:
@@ -181,7 +178,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
         for template in last_ass:
             #print(f"examining template {template}")
             if last_ass[template] == cluster:
-                print(f"line 190 -Call AddToCenter")
+                #print(f"line 190 -Call AddToCenter")
                 cluster_totals[cluster] += AddToCenter(centers[cluster], current_date, next_date, data[template])
 
     if USE_KNN:
@@ -201,10 +198,8 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
         #adjust as having sample length 1 has no neighbors
         if len(samples) <= 1:
-            print("not enough samples")
             nbrs = None
         else:
-            print("has enough samples")
             normalized_samples = normalize(np.array(samples), copy = False)
             nbrs = NearestNeighbors(n_neighbors=1, algorithm=KNN_ALG, metric='l2')
             nbrs.fit(normalized_samples)
@@ -419,7 +414,7 @@ if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Time series clusreting')
     aparser.add_argument('--dir', default="combined-results", help='The directory that contains the time series'
             'csv files')
-    aparser.add_argument('--project', help='The name of the workload')
+    aparser.add_argument('--project', default="tiramisu", help='The name of the workload')
     aparser.add_argument('--rho', default=0.8, help='The threshold to determine'
         'whether a query template belongs to a cluster')
     args = vars(aparser.parse_args())
@@ -451,5 +446,5 @@ if __name__ == '__main__':
     print(sum(total_queries.values()))
 
     # Container testing/debugging
-    while True:
-        time.sleep(1)
+    #while True:
+    #    time.sleep(1)

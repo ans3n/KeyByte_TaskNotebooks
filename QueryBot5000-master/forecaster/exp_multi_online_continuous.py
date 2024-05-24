@@ -38,8 +38,8 @@ from models import PSRNN_Model
 PROJECTS = {
     "tiramisu": {
         "name": "tiramisu",
-        "input_dir": "../data/online-tiramisu-clusters",
-        "cluster_path": "../data/cluster-coverage/tiramisu-coverage.pickle",
+        "input_dir": "../data/online-tiramisu-clusters",    #likely only online_clustering?
+        "cluster_path": "../data/cluster-coverage/tiramisu-coverage.pickle",    #from generate-cluster-coverage
         "output_dir":
         #"../result-interval-new/online-prediction/online-tiramisu-clusters-prediction",
         "../result/online-prediction/online-tiramisu-clusters-prediction",
@@ -168,6 +168,7 @@ def batchify(data, bsz):
 
 
 def LoadData(file_path, aggregate):
+    print("enter LoadData")
     trajs = dict()
 
     datetime_format = "%Y-%m-%d %H:%M:%S" # Strip milliseconds ".%f"
@@ -497,8 +498,9 @@ def evaluate_pass(args, method, model, data, criterion, bptt):
 
 
 def GetModel(args, data, method):
+    print(f"line 501 -enter GetModel with args {args} method {method} and data {data}")
     train = batchify(data, args.batch_size)
-
+    print(f"line 503 - GetModel {train}")
     ntokens = train.shape[2]
     bsz = train.shape[1]
 
@@ -556,6 +558,7 @@ def GetModel(args, data, method):
     return model
 
 def GetMultiData(trajs, clusters, date, num_days, interval, num_mins, aggregate):
+    print(f"line 560 - enter GetMultiData with ")
     date_list = [date - timedelta(minutes = x) for x in range(num_days * interval * aggregate,
         -num_mins, -aggregate)]
 
@@ -595,7 +598,7 @@ def Normalize(data):
     return data, data_min, data_mean, data_std
 
 def Predict(args, config, top_cluster, trajs, method):
-
+    print(f"line 599 - enter predict with args{args}, top_cluster {top_cluster} trajs {trajs}")
     for date, cluster_list in top_cluster[args.start_pos // args.interval:- max(args.horizon //
             args.interval, 1)]:
         # Training delta
@@ -616,19 +619,24 @@ def Predict(args, config, top_cluster, trajs, method):
 
         clusters = next(zip(*cluster_list))[:args.top_cluster_num]
 
+        print("line 620 - Predict() calling GetMultiData")
         data = GetMultiData(trajs, clusters, date, train_delta_intervals, args.interval, predict_delta_mins, args.aggregate)
 
-
+        print("line 624 - Predict() Normalize() called")
         data, data_min, data_mean, data_std = Normalize(data)
 
         #print(data)
+        print("Data shape:")
         print(data.shape)
         #print(args.interval, args.horizon)
         train_data = data[:-args.interval - args.horizon]
+        print("Training data shape:")
         print(train_data.shape)
         test_data = data[-(args.paddling_intervals * args.interval + args.horizon + args.interval):]
+        print("Test data shape:")
         print(test_data.shape)
 
+        print("line 638 - call GetModel")
         model = GetModel(args, train_data, method)
 
         criterion = nn.MSELoss()
@@ -717,6 +725,7 @@ def Main(config, method, aggregate, horizon, input_dir, output_dir, cluster_path
     output_dir = output_dir or config['output_dir']
     cluster_path = cluster_path or config['cluster_path']
 
+    print("line 721 - main calls LoadData")
     trajs = LoadData(input_dir, aggregate)
 
     with open(cluster_path, 'rb') as f:
@@ -735,6 +744,7 @@ def Main(config, method, aggregate, horizon, input_dir, output_dir, cluster_path
     os.makedirs(output_dir)
 
     config['output_dir'] = output_dir
+    print("line 740 - Main calls Predict")
     Predict(args, config, top_cluster, trajs, method)
 
 

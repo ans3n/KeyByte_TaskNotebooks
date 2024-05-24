@@ -1,10 +1,10 @@
+#!/bin/bash
 #########################################################################
 # File Name: run.sh
 # Author: Lin Ma
 # mail: malin1993ml@gmail.com
 # Created Time: 10/08/17
 #########################################################################
-#!/bin/bash
 
 trap onexit 1 2 3 15
 function onexit() {
@@ -22,7 +22,7 @@ fi
 
 for PROJECT in 'admission'; do
     for RHO in '0.1' '0.2' '0.3' '0.4'; do
-        cmd="time python3.5 generate-cluster-coverage.py
+        cmd="time python3.9 generate-cluster-coverage.py
                 --project $PROJECT
                 --assignment online-logical-clustering-results/$PROJECT-$RHO-assignments.pickle
                 --output_csv_dir online-clusters-logical/$PROJECT/$RHO/

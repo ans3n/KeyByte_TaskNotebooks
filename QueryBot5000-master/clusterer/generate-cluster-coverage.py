@@ -21,7 +21,8 @@ DATA_DICT = {
         #'admission': "../synthetic_workload/noise/",
         'admission': "../clustering/timeseries/admissions/admission-combined-results-full/",
         'oli': "oli-combined-results/",
-        'tiramisu': 'tiramisu-combined-csv/',
+        'tiramisu': 'combined-results/',
+        #'tiramisu': 'tiramisu-combined-csv/',
         }
 
 # Only looks at the csv files for the first 10 templates for testing purpose
@@ -57,6 +58,7 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S" # Strip milliseconds ".%f"
 
 
 def LoadData(input_path):
+    print(f"line 61 - enter LoadData with input path {input_path}")
     total_queries = dict()
     templates = []
     min_date = datetime.max
@@ -65,50 +67,68 @@ def LoadData(input_path):
     data_accu = dict()
 
     cnt = 0
-    for csv_file in sorted(os.listdir(input_path)):
-        print(csv_file)
-        with open(input_path + "/" + csv_file, 'r') as f:
-            reader = csv.reader(f)
-            queries, template = next(reader)
+    for root, dirs, files in os.walk(input_path):
+        if root.endswith('.zip.anonymized'):
+            for csv_file in sorted(files):
+                if not csv_file.endswith('.csv'):
+                    #print(f"Ignoring non-CSV file: {csv_file}")
+                    continue
 
-            # To make the matplotlib work...
-            template = template.replace('$', '')
+                print(csv_file)
 
-            # Assume we already filtered out other types of queries when combining template csvs
-            #statement = template.split(' ',1)[0]
-            #if not statement in STATEMENTS:
-            #    continue
+                try:
+                    #take care of UnicodeDecodeError with UTF-8
+                    with open(os.path.join(root, csv_file), 'r', encoding='utf-8', errors='replace') as f:
+                        # Read the entire content and replace NULL bytes - csv NUL line error
+                        content = f.read().replace('\x00', ' ')
+                        f = content.splitlines()
 
-            #print queries, template
-            total_queries[template] = int(queries)
-            #print queries
+                        reader = csv.reader(f)
+                        # Skip the first row - column labels
+                        next(reader, None)
+                        queries, template = next(reader)
 
-            templates.append(template)
+                        # To make the matplotlib work...
+                        template = template.replace('$', '')
 
-            # add template
-            data[template] = SortedDict()
-            data_accu[template] = SortedDict()
+                        # Assume we already filtered out other types of queries when combining template csvs
+                        #statement = template.split(' ',1)[0]
+                        #if not statement in STATEMENTS:
+                        #    continue
 
-            total = 0
+                        #print queries, template
+                        queries_datetime = datetime.strptime(queries, "%Y-%m-%d %H:%M:%S")
+                        total_queries[template] = int(queries_datetime.timestamp())
+                        #print queries
+                        templates.append(template)
 
-            for line in reader:
-                time_stamp = datetime.strptime(line[0], DATETIME_FORMAT)
-                count = int(line[1])
+                        # add template
+                        data[template] = SortedDict()
+                        data_accu[template] = SortedDict()
 
-                data[template][time_stamp] = count
+                        total = 0
 
-                total += count
-                data_accu[template][time_stamp] = total
+                        #Iterate through every line in the CSV file
+                        for line in reader:
+                            time_stamp = datetime.strptime(line[0], DATETIME_FORMAT)
+                            count = int(line[1])
 
-                min_date = min(min_date, time_stamp)
-                max_date = max(max_date, time_stamp)
-                #break
+                            data[template][time_stamp] = count
 
-        cnt += 1
+                            total += count
+                            data_accu[template][time_stamp] = total
 
-        if TESTING:
-            if cnt == 10:
-                break
+                            min_date = min(min_date, time_stamp)
+                            max_date = max(max_date, time_stamp)
+                except StopIteration:
+                    print(f"StopIteration encountered in file {csv_file}. Moving onto next file")
+                    continue
+
+                cnt += 1
+
+                if TESTING:
+                    if cnt == 10:
+                        break
 
     templates = sorted(templates)
 
@@ -233,12 +253,17 @@ def WriteResult(path, date, data):
         writer.writerow([date, data])
 
 def Main(project, assignment_path, output_csv_dir, output_dir):
+    print(f"project {project} assignment_path: {assignment_path}")
     with open(assignment_path, 'rb') as f:
         num_clusters, assignment_dict, _ = pickle.load(f)
 
     min_date, max_date, data, data_accu, total_queries, templates = LoadData(DATA_DICT[project])
+    #print(f"Line 261 - Main method exits LoadData with data {data}\n data_accu: {data_accu}\n total_queries: {total_queries}")
+    #print(f"templates: {templates}")
 
+    print(f"output directory creating in case: {output_dir}")
     if not os.path.exists(output_dir):
+        print("creating output directory")
         os.makedirs(output_dir)
 
     if os.path.exists(output_csv_dir):
@@ -265,5 +290,8 @@ if __name__ == '__main__':
     aparser.add_argument('--output_dir', help='Where to put the output coverage files')
     args = vars(aparser.parse_args())
 
+    print(f"output csv directory being received: {args['output_csv_dir']}")
+    print(f"output csv directory being received: {args['output_dir']}")
+    #Main("tiramisu", "online-clustering-results/tiramisu-0.8-assignments.pickle", args['output_csv_dir'], args['output_dir'])
     Main(args['project'], args['assignment'], args['output_csv_dir'], args['output_dir'])
 

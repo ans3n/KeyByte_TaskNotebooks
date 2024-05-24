@@ -16,6 +16,7 @@ COPY . /app
 # Add the tiramisu-sample.tar.gz into the container
 #ADD tiramisu-sample.tar.gz /app
 ADD combined-results /app
+ADD clustering-results /app
 
 #alternatively use a dot simply adds to the base folder in the container
 # ADD templatizer.py .
@@ -26,4 +27,5 @@ RUN pip install numpy scipy scikit-learn sortedcontainers statsmodels matplotlib
 
 # Execute Command on Container Start
 #CMD ["python3", "./templatizer.py"]
-ENTRYPOINT ["python3", "./online_clustering.py"]
+#ENTRYPOINT ["python3", "./online_clustering.py"]
+ENTRYPOINT ["python3", "./generate-cluster-coverage.py"]

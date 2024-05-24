@@ -1,10 +1,10 @@
+#!/bin/bash
 #########################################################################
 # File Name: run.sh
 # Author: Lin Ma
 # mail: malin1993ml@gmail.com
 # Created Time: 10/08/17
 #########################################################################
-#!/bin/bash
 
 trap onexit 1 2 3 15
 function onexit() {
@@ -28,7 +28,7 @@ for PAIR in "${PROJECT_ARRAY[@]}"; do
     PROJECT="${PAIR%%:*}"
     DATA_PATH="${PAIR##*:}"
     for RHO in '0.55' '0.65' '0.75' '0.85' '0.95'; do
-        cmd="time python3.5 online_clustering.py --project $PROJECT --dir $DATA_PATH
+        cmd="time python3.9 online_clustering.py --project $PROJECT --dir $DATA_PATH
                 --rho $RHO"
 
         echo $cmd
