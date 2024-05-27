@@ -38,8 +38,8 @@ from models import PSRNN_Model
 PROJECTS = {
     "tiramisu": {
         "name": "tiramisu",
-        "input_dir": "../data/online-tiramisu-clusters",    #likely only online_clustering?
-        "cluster_path": "../data/cluster-coverage/tiramisu-coverage.pickle",    #from generate-cluster-coverage
+        "input_dir": "../clustering-results/cluster-coverage/csv-output",    #likely only online_clustering?
+        "cluster_path": "../clustering-results/cluster-coverage/tiramisu-coverage.pickle",    #from generate-cluster-coverage
         "output_dir":
         #"../result-interval-new/online-prediction/online-tiramisu-clusters-prediction",
         "../result/online-prediction/online-tiramisu-clusters-prediction",
@@ -746,6 +746,7 @@ def Main(config, method, aggregate, horizon, input_dir, output_dir, cluster_path
     config['output_dir'] = output_dir
     print("line 740 - Main calls Predict")
     Predict(args, config, top_cluster, trajs, method)
+    print("line 749 - finish Predict")
 
 
 # ==============================================

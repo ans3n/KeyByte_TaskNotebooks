@@ -165,10 +165,8 @@ def MakeCSVFiles(workload_dict, min_timestamp, max_timestamp, output_dir):
     print("Generating CSV files...")
     print(output_dir)
 
-    print("pre create result folder")
     # Create the result folder if not exists
     if not os.path.exists(output_dir):
-        print("creating result folder")
         os.makedirs(output_dir)
 
     # delete any old existing files
@@ -209,25 +207,25 @@ def MakeCSVFiles(workload_dict, min_timestamp, max_timestamp, output_dir):
     print("Template count: " + str(template_count))
 
 def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
-    print("Enter ProcessAnonymizedLogs")
-    print(f"Input directory: {input_dir}")
-    print(f"File pattern: {config['files']}")
+    #print("Enter ProcessAnonymizedLogs")
+    #print(f"Input directory: {input_dir}")
+    #print(f"File pattern: {config['files']}")
 
     #modified to add config name - results in " request returned Internal Server Error for API route "
     #target = os.path.join(input_dir, config['name'], config['files'])
     target = os.path.join(input_dir, config['files'])
-    print(f"Target pattern: {target}")
+    #print(f"Target pattern: {target}")
 
     files = sorted([ x for x in glob.glob(target) ])
 
     # Print the list of files found
-    print(f"Files found: {files}")
+    #print(f"Files found: {files}")
 
     if not files:
         print("No files found matching the pattern - exiting")
         return
 
-    print("finished joining")
+    #print("finished joining")
     proc = []
     for i, log_file in enumerate(files):
         #if i < 45:
@@ -241,7 +239,6 @@ def ProcessAnonymizedLogs(input_dir, output_dir, max_log, config):
         p.start()
         proc.append(p)
 
-    print("before second for loop")
     for p in proc:
         p.join()
 

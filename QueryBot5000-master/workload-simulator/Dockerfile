@@ -13,11 +13,15 @@ COPY . /app
 # Set the working directory
 #WORKDIR /app
 
-# Add the tiramisu dataset into the container
-ADD tiramisu-sample /app
+# Add the tiramisu-sample.tar.gz into the container
+ADD clustering-results /app
+
+#alternatively use a dot simply adds to the base folder in the container
+# ADD templatizer.py .
+# ADD tiramisu-sample.tar.gz .
 
 # Install Dependencies
 RUN pip install numpy scipy scikit-learn sortedcontainers statsmodels matplotlib torch
 
 # Execute Command on Container Start
-ENTRYPOINT ["python3", "./templatizer.py"]
+ENTRYPOINT ["python3", "./workload-simulator.py"]
