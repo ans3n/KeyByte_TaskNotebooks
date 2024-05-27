@@ -135,6 +135,7 @@ def ExtractSample(x, index):
             #print("append 0 in extractSample")
             v.append(0)
 
+    #To examine
     print(f"ExtractSample returning array of length {len(np.array(v))}: {np.array(v)}")
     return np.array(v)
 
@@ -171,8 +172,8 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
     index = [ min_date + dt.timedelta(minutes = i) for i in index]
     new_ass = last_ass.copy()
 
-    #center has no length below
-    print(f"line 184 - centers is length {len(centers)}")
+    #center has no length below - debugging
+    #print(f"line 184 - centers is length {len(centers)}")
     # Update cluster centers with new data in the last gap
     for cluster in centers.keys():
         for template in last_ass:
@@ -185,10 +186,9 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
         print("Building kdtree for single point assignment")
         clusters = sorted(centers.keys())
         #print has clusters = 0
-        print(f"clusters from sorted centers keys: {clusters}")
+        #print(f"clusters from sorted centers keys: {clusters}")
         samples = list()
 
-        print("USE_KNN entering for loop")
         for cluster in clusters:
             #print(f"for cluster interation {cluster}")
             #print(f"line 207 ExtractSample - x is {centers[cluster]}")
@@ -209,7 +209,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
     cnt = 0
 
-    print(f"line 223 - new_ass array is length {len(new_ass)}")
+    #print(f"line 223 - new_ass array is length {len(new_ass)}")
     for t in sorted(data.keys()):
         #print(f"AdjustCluster new_ass array of {t}: {new_ass[t]}")
         cnt += 1
@@ -228,7 +228,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
             #print(centers[new_ass[t]])
             #print([ (d, data[t][d]) for d in data[t].irange(min_date, next_date, (True, False))])
             cluster_sizes[cluster] -= 1
-            print("line 242 - AddtoCenter")
+            #print("line 242 - AddtoCenter")
             AddToCenter(centers[cluster], min_date, next_date, data[t], False)
             print("%s: template %s quit from cluster %d with total %d" % (next_date, cnt, cluster,
                 total_queries[t]))
@@ -261,7 +261,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
                     cnt, new_cluster, total_queries[t]))
 
             new_ass[t] = new_cluster
-            print("line 276 AddtoCenter")
+            #print("line 276 AddtoCenter")
             AddToCenter(centers[new_cluster], min_date, next_date, data[t])
             cluster_sizes[new_cluster] += 1
             continue
@@ -276,14 +276,14 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
         new_ass[t] = next_cluster
         centers[next_cluster] = SortedDict()
-        print("Call AddToCenter - line 294")
+        #print("Call AddToCenter - line 294")
         AddToCenter(centers[next_cluster], min_date, next_date, data[t])
         cluster_sizes[next_cluster] = 1
         cluster_totals[next_cluster] = 0
 
         next_cluster += 1
 
-    print(f"line 296 after AdjustCluster for loop - centers is length {len(centers)}")
+    #print(f"line 296 after AdjustCluster for loop - centers is length {len(centers)}")
     clusters = list(centers.keys())
     #print(f"final clusters: {clusters}")
     # a union-find set to track the root cluster for clusters that have been merged
@@ -311,7 +311,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
 
         print("Finish building kdtree for cluster merging")
 
-    print("enter for loop - line 331")
+    #print("enter for loop - line 331")
     for i in range(len(clusters)):
         c1 = clusters[i]
         c = None
@@ -342,7 +342,7 @@ def AdjustCluster(min_date, current_date, next_date, data, last_ass, next_cluste
                 c = clusters[nbr]
 
         if c != None:
-            print("line 358 - addtocenter")
+            #print("line 358 - addtocenter")
             AddToCenter(centers[c], min_date, next_date, centers[c1])
             cluster_sizes[c] += cluster_sizes[c1]
 

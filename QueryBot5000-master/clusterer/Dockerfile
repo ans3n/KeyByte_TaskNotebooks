@@ -27,5 +27,5 @@ RUN pip install numpy scipy scikit-learn sortedcontainers statsmodels matplotlib
 
 # Execute Command on Container Start
 #CMD ["python3", "./templatizer.py"]
-#ENTRYPOINT ["python3", "./online_clustering.py"]
-ENTRYPOINT ["python3", "./generate-cluster-coverage.py"]
+ENTRYPOINT ["python3", "./online_clustering.py"]
+#ENTRYPOINT ["python3", "./generate-cluster-coverage.py"]
